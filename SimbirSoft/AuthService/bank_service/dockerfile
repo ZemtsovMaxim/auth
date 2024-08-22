@@ -1,0 +1,17 @@
+FROM golang:1.21.1
+
+# Установка wait-for-it для ожидания поднятия сервисов
+ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /usr/local/bin/wait-for-it
+RUN chmod +x /usr/local/bin/wait-for-it
+
+COPY . /bank_service
+
+WORKDIR /bank_service
+
+RUN go get ./cmd/bank
+
+CMD /usr/local/bin/wait-for-it db:5432 --timeout=30 -- \
+go run ./cmd/bank/main.go & \
+/usr/local/bin/wait-for-it 0.0.0.0:8000 --timeout=30 -- \
+go test ./tests & \
+wait

@@ -1,0 +1,14 @@
+env: 'local' # local, dev, prod
+storage_path: "postgres://myUser:12345@db:5432/myDb?sslmode=disable"
+token_ttl: 1h # live of token
+grpc:
+  port: 8080
+  timeout: 10h
+# db:
+#   driver: "postgres"
+#   host: "db"
+#   port: 5432
+#   user: "myUser"
+#   password: "12345"
+#   name: "myDb"
+#   sslmode: "disable"

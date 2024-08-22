@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "/api";
+
+service Auth {
+    rpc Register (RegisterRequest) returns (RegisterResponse);
+    rpc Login (LoginRequest) returns (LoginResponse);
+    rpc Logout (LogoutRequest) returns (LogoutResponse);
+    rpc ValidateToken (ValidateTokenRequest) returns (ValidateTokenResponse);
+}
+
+message RegisterRequest {
+    string email = 1; // Email of the user to register.
+    string password = 2; // Password of the user to register.
+}
+
+message RegisterResponse {
+    string status_message = 1; // Indicates whether the registration was successful.
+}
+
+message LoginRequest {
+    string email = 1; // Email of the user to login.
+    string password = 2; // Password of the user to login.
+}
+
+message LoginResponse {
+    string token = 1; // Auth token of the logged in user.
+}
+
+message LogoutRequest {
+    string token = 1; // Auth token of the user to logout.
+}
+  
+message LogoutResponse {
+    string token = 1; // Returns new invalid token.
+}
+
+message ValidateTokenRequest{
+    string token = 1; // Receive token to validate.
+}
+
+message ValidateTokenResponse{
+    int64 id = 1; // Returns id of user.
+}

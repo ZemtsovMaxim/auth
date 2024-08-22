@@ -1,0 +1,9 @@
+migration_path: "file://migrations/postgres/"
+storage:
+  driver: "postgres"
+  info: "host=bankdb port=5435 user=admin password=1111 dbname=bankDB sslmode=disable"
+  url: "postgres://admin:1111@bankdb:5435/bankDB?sslmode=disable"
+my_grpc:
+  network: "tcp" # network must be "tcp", "tcp4", "tcp6", "unix" or "unixpacket"
+  address: "0.0.0.0:8001"
+  timeout: 5s

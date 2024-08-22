@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package bank;
+
+option go_package = "internal/server/grpc/;bank_v1";
+
+service Bank {
+    rpc CreateAccount (CreateAccountRequest) returns (CreateAccountResponse);
+    rpc AccountTopUp (AccountTopUpRequest) returns (AccountTopUpResponse);
+    rpc AccountWithdraw (AccountWithdrawRequest) returns (AccountWithdrawResponse);
+    rpc AccountTransfer (AccountTransferRequest) returns (AccountTransferResponse);
+    rpc AccountLock (AccountLockRequest) returns (AccountLockResponse);
+}
+
+message CreateAccountRequest {
+    string jwt = 1;
+	string full_name = 2;
+	string citizenship = 3;
+	int64 balance = 4;
+}
+
+message CreateAccountResponse {
+    int64 account_id = 1; // ID of created account
+	int64 balance = 2; // Created account balance
+}
+
+message AccountTopUpRequest {
+	string jwt = 1;
+    int64 account_id = 2;
+    int64 top_up_amount = 3;
+}
+
+message AccountTopUpResponse {
+    int64 balance = 1; // Account balance after top up
+}
+
+message AccountWithdrawRequest {
+	string jwt = 1;
+    int64 account_id = 2;
+    int64 withdraw_amount = 3;
+}
+
+message AccountWithdrawResponse {
+    int64 balance = 1; // Account balance after withdraw
+}
+
+message AccountTransferRequest {
+	string jwt = 1;
+    int64 write_off_account_id= 2;
+    int64 beneficiary_account_id = 3;
+    int64 transfer_amount = 4;
+}
+
+message AccountTransferResponse {
+    int64 write_off_account_balance = 1;
+    int64 beneficiary_account_balance = 2;
+}
+
+message AccountLockRequest {
+    int64 account_id = 1; // Account ID to lock
+}
+
+message AccountLockResponse {
+}

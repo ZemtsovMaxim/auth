@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  auth:
+    build: ./
+    ports:
+      - 8080:8080
+      - 0.0.0.0:8082:8082
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://myUser:12345@db:5432/myDb?sslmode=disable
+    restart: always 
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: myUser
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: myDb
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myUser -d myDb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - D:/GoProjects/SimbirSoft/AuthService/auth/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 19090:9090
